@@ -24,7 +24,7 @@ type ArticleParamsFormProps = {
 export const ArticleParamsForm = ({ onApply }: ArticleParamsFormProps) => {
 	const containerRef = useRef<HTMLDivElement>(null);
 
-	const [isOpen, setIsOpen] = useState(false);
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
 
 	const [fontFamily, setFontFamily] = useState<OptionType>(
 		defaultArticleState.fontFamilyOption
@@ -46,19 +46,19 @@ export const ArticleParamsForm = ({ onApply }: ArticleParamsFormProps) => {
 	);
 
 	useEffect(() => {
-		if (!isOpen) return;
+		if (!isMenuOpen) return;
 
 		const handleClickOutside = (e: MouseEvent) => {
 			if (
 				containerRef.current &&
 				!containerRef.current.contains(e.target as Node)
 			) {
-				setIsOpen(false);
+				setIsMenuOpen(false);
 			}
 		};
 		document.addEventListener('mousedown', handleClickOutside);
 		return () => document.removeEventListener('mousedown', handleClickOutside);
-	}, [isOpen]);
+	}, [isMenuOpen]);
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
@@ -82,10 +82,13 @@ export const ArticleParamsForm = ({ onApply }: ArticleParamsFormProps) => {
 
 	return (
 		<div ref={containerRef}>
-			<ArrowButton isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} />
+			<ArrowButton
+				isOpen={isMenuOpen}
+				onClick={() => setIsMenuOpen(!isMenuOpen)}
+			/>
 			<aside
 				className={`${styles.container} ${
-					isOpen ? styles.container_open : ''
+					isMenuOpen ? styles.container_open : ''
 				}`}>
 				<form className={styles.form} onSubmit={handleSubmit}>
 					<Text as='h2' size={31} weight={800} uppercase>
